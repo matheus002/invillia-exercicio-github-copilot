@@ -4,6 +4,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Function to create participants component
+  function createParticipantsComponent(participants) {
+    if (participants.length === 0) {
+      return "<p>No participants yet</p>";
+    }
+
+    const participantList = participants
+      .map(
+        (participant) => `
+          <div class="participant">
+            <div class="avatar">${participant.charAt(0).toUpperCase()}</div>
+            <span class="name">${participant}</span>
+          </div>
+        `
+      )
+      .join("");
+
+    return `
+      <div class="participants-component">
+        <h5>Participants:</h5>
+        <div class="participant-list">
+          ${participantList}
+        </div>
+      </div>
+    `;
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -25,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${createParticipantsComponent(details.participants)}
         `;
 
         activitiesList.appendChild(activityCard);
@@ -79,6 +107,13 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
     }
+  });
+
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    document.querySelector("header").classList.toggle("dark-mode");
   });
 
   // Initialize app
