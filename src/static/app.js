@@ -11,13 +11,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const participantList = participants
-      .map((participant) => `<li>${participant}</li>`)
+      .map(
+        (participant) => `
+          <div class="participant">
+            <div class="avatar">${participant.charAt(0).toUpperCase()}</div>
+            <span class="name">${participant}</span>
+          </div>
+        `
+      )
       .join("");
 
     return `
       <div class="participants-component">
         <h5>Participants:</h5>
-        <ul>${participantList}</ul>
+        <div class="participant-list">
+          ${participantList}
+        </div>
       </div>
     `;
   }
